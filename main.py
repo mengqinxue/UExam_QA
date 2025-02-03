@@ -13,7 +13,7 @@ def print_hi(name):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    print_hi('Hello')
     f01_even_and_odd.y3_math_c1_generate_counting_even_odd_question()
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
