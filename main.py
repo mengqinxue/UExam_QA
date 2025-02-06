@@ -3,7 +3,7 @@
 # Press ⌃R to execute it or replace it with your code.
 # Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
 
-from year3.math import f01_even_and_odd
+from year3.math import a01_even_and_odd
 
 
 def print_hi(name):
