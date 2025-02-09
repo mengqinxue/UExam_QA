@@ -1,0 +1,120 @@
+import re
+import random
+
+
+def add_zero_after_numbers(s):
+    # 定义正则表达式模式，匹配一个或多个数字
+    pattern = r'\d+'
+    # 使用 re.sub() 函数替换匹配到的数字，在后面添加 0
+    result = re.sub(pattern, lambda m: m.group(0) + '0', s)
+    return result
+
+
+def generate_fruit_question(str):
+
+    pattern = r'\d+'
+    numbers = re.findall(pattern, str)
+
+    object_list = ["apples", "oranges", "eggs", "bananas", "grapes", "pears"]
+    selected_objects = random.sample(object_list, 2)
+
+    question = f"I have {numbers[0]} {selected_objects[0]} and {numbers[1]} {selected_objects[1]}. How many objects do I have?"
+    return question
+
+
+def c01_generate_addition_problems(num_addends, integer_digits, decimal_digits):
+    if len(integer_digits) != num_addends or len(decimal_digits) != num_addends:
+        raise ValueError("integer_digits 和 decimal_digits 列表的长度必须等于 num_addends")
+
+    addends = []
+    for i in range(num_addends):
+        num = round(random.uniform(10 ** (integer_digits[i] - 1), 10 ** integer_digits[i] - 1), decimal_digits[i])
+        if decimal_digits[i] == 0:
+            num = int(num)  # 去掉小数部分
+        addends.append(num)
+
+    correct_answer = sum(addends)
+    problem = " + ".join(map(str, addends)) + " = ?"
+
+    # 生成三个错误的答案
+    wrong_answers = set()
+    while len(wrong_answers) < 3:
+        wrong_answer = round(random.uniform(correct_answer - 10, correct_answer + 10), max(decimal_digits))
+        if decimal_digits[i] == 0:
+            wrong_answer = int(wrong_answer)  # 去掉小数部分
+        if wrong_answer != correct_answer & wrong_answer > 0:
+            wrong_answers.add(wrong_answer)
+
+    # 将正确答案和错误答案合并并打乱顺序
+    options = list(wrong_answers) + [correct_answer]
+    random.shuffle(options)
+
+    question = [problem, options[0], options[1], options[2], options[3],
+                "ABCD"[options.index(correct_answer)]]
+
+    return question
+
+
+def c09_c10_generate_math_question():
+    # 随机生成两个数字
+    base_number = random.randint(1, 100)
+    correct_answer = random.randint(1, 100)
+    target_sum = base_number + correct_answer
+
+    # 生成三个错误的答案
+    wrong_answers = set()
+    while len(wrong_answers) < 3:
+        wrong_answer = random.randint(target_sum - 20, target_sum + 20)
+        if wrong_answer != correct_answer:
+            wrong_answers.add(wrong_answer)
+
+    # 将正确答案和错误答案合并并打乱顺序
+    options = list(wrong_answers) + [correct_answer]
+    random.shuffle(options)
+
+    # 创建问题字符串
+    problem = f"{base_number} + (?) = {target_sum}"
+
+    # 创建选项列表
+    options_list = [f"{i}" for i in options]
+
+    # 找到正确答案的索引
+    correct_option_index = options.index(correct_answer)
+    correct_option_letter = "ABCD"[correct_option_index]
+
+    return [problem, options_list[0], options_list[1], options_list[2], options_list[3],
+            correct_option_letter]
+
+
+
+# C01 一位整数加法
+print(c01_generate_addition_problems(2, [1, 1], [0, 0]))
+
+# C02 - Add multiples of 10
+new_question = c01_generate_addition_problems(2, [1, 1], [0, 0])
+
+for i in range(len(new_question)):
+    if isinstance(new_question[i], str):
+        new_question[i] = add_zero_after_numbers(new_question[i])
+    else:
+        new_question[i] = new_question[i] * 10
+
+print(new_question)
+
+# C03/C04 - Add a two-digit and a one-digit number
+print(c01_generate_addition_problems(2, [2, 1], [0, 0]))
+
+# C05/C06 - Add a two-digit and a two-digit number
+print(c01_generate_addition_problems(2, [2, 2], [0, 0]))
+
+# C07 - Compensation add
+
+# C08 - addition word problem (e.g. "I have 5 apples and 3 oranges. How many fruits do I have?")
+new_question = c01_generate_addition_problems(2, [2, 2], [0, 0])
+new_question[0] = generate_fruit_question(new_question[0])
+print(new_question)
+
+# C09/C10 Addition input/output tables - up to two digits
+print(c09_c10_generate_math_question())
+
+# C11 - Balance addition equations - up to two digits

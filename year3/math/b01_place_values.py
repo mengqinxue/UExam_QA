@@ -80,4 +80,119 @@ def b01_generate_cubes():
     return ['The number of cubes is ', options[0], options[1], options[2], options[3], correct_option]
 
 
-print(b01_generate_cubes())
+def b02_generate_math_question():
+    # 随机生成一个四位数
+    number = random.randint(1000, 9999)
+    number_str = str(number)
+
+    # 随机选择一个数字作为问题中的目标数字
+    target_digit = random.choice(number_str)
+
+    # 定义选项
+    options = ["ones place", "tens place", "hundreds place", "thousands place"]
+
+    # 找到目标数字的位置
+    position = len(number_str) - number_str.index(target_digit) - 1
+
+    # 根据位置选择正确的选项
+    correct_option = options[position]
+
+    # 打乱选项顺序
+    random.shuffle(options)
+
+    correct_option = "ABCD"[options.index(correct_option)]
+
+    # 生成问题和选项
+    question = [f"Where is the digit {target_digit} in {number}?", options[0], options[1], options[2], options[3], correct_option]
+
+    return question
+
+
+def b03_generate_math_question():
+    # 随机生成一个六位数
+    number = random.randint(100000, 999999)
+    number_str = str(number)
+
+    # 定义位置和对应的选项
+    positions = {
+        "ones place": -1,
+        "tens place": -2,
+        "hundreds place": -3,
+        "thousands place": -4,
+        "ten-thousands place": -5,
+        "hundred-thousands place": -6
+    }
+
+    # 随机选择一个位置
+    selected_position = random.choice(list(positions.keys()))
+    selected_digit = number_str[positions[selected_position]]
+
+    # 生成选项，包括正确的选项和三个随机的其他数字
+    options = [selected_digit]
+    while len(options) < 4:
+        random_digit = str(random.randint(0, 9))
+        if random_digit not in options:
+            options.append(random_digit)
+
+    # 打乱选项顺序
+    random.shuffle(options)
+
+    correct_option = "ABCD"[options.index(selected_digit)]
+
+    # 生成问题和选项
+    question = [f"Which digit is in the {selected_position} in {number}?",
+                options[0], options[1], options[2], options[3], correct_option]
+
+    return question
+
+
+def b15_generate_math_question():
+    # 随机生成一个六位数
+    number = random.randint(100000, 999999)
+    number_str = str(number)
+
+    # 定义位置和对应的数字
+    positions = {
+        "hundred-thousands place": number_str[0],
+        "ten-thousands place": number_str[1],
+        "thousands place": number_str[2],
+        "hundreds place": number_str[3],
+        "tens place": number_str[4],
+        "ones place": number_str[5]
+    }
+
+    # 随机选择一个位置
+    selected_position = random.choice(list(positions.keys()))
+    selected_digit = positions[selected_position]
+
+    # 生成描述
+    description_parts = []
+    for position, digit in positions.items():
+        description_parts.append(f"{digit} in the {position}")
+
+    description = ", ".join(description_parts[:-1]) + f", and {description_parts[-1]}"
+
+    # 生成问题
+    question = (f"We can now write the number by combining these digits. The number has {description}. "
+                f"So the number is (?)")
+
+    # 生成选项
+    correct_option = number
+    options = [correct_option]
+
+    while len(options) < 4:
+        random_number = random.randint(100000, 999999)
+        if random_number not in options:
+            options.append(random_number)
+
+    # 打乱选项顺序
+    random.shuffle(options)
+
+    question = [question, options[0], options[1], options[2], options[3], "ABCD"[options.index(correct_option)]]
+
+    return question
+
+
+
+
+print(b15_generate_math_question())
