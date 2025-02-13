@@ -134,50 +134,50 @@ def e01_generate_multiplication_problems(num_factors, integer_digits, decimal_di
     return question
 
 
-def c09_c10_generate_math_question():
+def e09_e10_generate_math_question():
     # 随机生成两个数字
-    base_number = random.randint(1, 100)
-    correct_answer = random.randint(1, 100)
-    target_sum = base_number + correct_answer
+    base_number = random.randint(1, 10)
+    multiplier = random.randint(1, 10)
+    correct_answer = base_number * multiplier
 
     # 生成三个错误的答案
     wrong_answers = set()
     while len(wrong_answers) < 3:
-        wrong_answer = random.randint(target_sum - 20, target_sum + 20)
+        wrong_answer = random.randint(correct_answer - 20, correct_answer + 20)
         if wrong_answer != correct_answer:
             wrong_answers.add(wrong_answer)
 
     # 将正确答案和错误答案合并并打乱顺序
-    options = list(wrong_answers) + [correct_answer]
+    options = list(wrong_answers) + [multiplier]
     random.shuffle(options)
 
     # 创建问题字符串
-    problem = f"{base_number} + (?) = {target_sum}"
+    problem = f"{base_number} × (?) = {correct_answer}"
 
     # 创建选项列表
     options_list = [f"{i}" for i in options]
 
     # 找到正确答案的索引
-    correct_option_index = options.index(correct_answer)
+    correct_option_index = options.index(multiplier)
     correct_option_letter = "ABCD"[correct_option_index]
 
     return [problem, options_list[0], options_list[1], options_list[2], options_list[3],
             correct_option_letter]
 
 
-def c11_generate_math_question():
+def e11_generate_math_question():
     # 生成题目中的数字
-    num1 = random.randint(9, 20)
-    num2 = random.randint(9, 20)
-    num3 = random.randint(9, num1 + num2 - 1)  # 确保 num1 + num2 > num3
+    num1 = random.randint(2, 10)  # 乘法因子范围调整
+    num2 = random.randint(2, 10)  # 乘法因子范围调整
+    num3 = random.randint(1, num1 * num2 - 1)  # 确保 num1 * num2 > num3
 
     # 计算正确答案
-    correct_answer = num1 + num2 - num3
+    correct_answer = num1 * num2 - num3
 
     # 生成三个错误答案
     wrong_answers = set()
     while len(wrong_answers) < 3:
-        wrong_answer = random.randint(1, 40)
+        wrong_answer = random.randint(1, 100)  # 调整错误答案范围
         if wrong_answer != correct_answer:
             wrong_answers.add(wrong_answer)
 
@@ -189,14 +189,22 @@ def c11_generate_math_question():
     correct_option_index = "ABCD"[options.index(correct_answer)]
 
     # 构建题目字符串
-    question = f"{num3} + (?) = {num1} + {num2}"
+    question = f"{num3} + (?) = {num1} × {num2}"
 
     return [question, options[0], options[1], options[2], options[3], correct_option_index]
+
 
 
 
 #e01
 print(e01_understand_multiplication(2, 3, filename='e1.jpg'))
 
-
 print(e01_generate_multiplication_problems(2, [1, 1], [0, 0]))
+
+print(e01_generate_multiplication_problems(2, [2, 1], [0, 0]))
+
+print(e01_generate_multiplication_problems(3, [1, 1, 1], [0, 0, 0]))
+
+print(e09_e10_generate_math_question())
+
+print(e11_generate_math_question())
